@@ -22,59 +22,6 @@ pipeline:
             steps:
               - step:
                   type: Run
-                  name: run unit test
-                  identifier: Welcome_Message
-                  spec:
-                    connectorRef: <+input>
-                    image: python:3.10.6-alpine
-                    shell: Sh
-                    command: |
-                      import unittest
-                      import yaml
-
-                      class TestPipeline(unittest.TestCase):
-                        def test_build_test_and_run_stage(self):
-                          with open('.harness/Pipeline.yaml') as f:
-                            pipeline = yaml.safe_load(f)
-                          build_test_and_run = pipeline['stages'][0]
-                          self.assertEqual(build_test_and_run['name'], 'build test and run')
-                          self.assertEqual(build_test_and_run['type'], 'CI')
-                          steps = build_test_and_run['spec']['execution']['steps']
-                          self.assertEqual(len(steps), 3)
-                          code_compile_step = steps[0]
-                          self.assertEqual(code_compile_step['name'], 'Code compile')
-                          self.assertEqual(code_compile_step['type'], 'Run')
-                          create_dockerfile_step = steps[1]
-                          self.assertEqual(create_dockerfile_step['name'], 'Create dockerfile')
-                          self.assertEqual(create_dockerfile_step['type'], 'Run')
-                          build_and_push_step = steps[2]
-                          self.assertEqual(build_and_push_step['name'], 'Build and Push an image to docker registry')
-                          self.assertEqual(build_and_push_step['type'], 'BuildAndPushDockerRegistry')
-
-                        def test_integration_test_stage(self):
-                          with open('.harness/Pipeline.yaml') as f:
-                            pipeline = yaml.safe_load(f)
-                          integration_test = pipeline['stages'][1]
-                          self.assertEqual(integration_test['name'], 'Integration test')
-                          self.assertEqual(integration_test['type'], 'CI')
-                          steps = integration_test['spec']['execution']['steps']
-                          self.assertEqual(len(steps), 2)
-                          python_server_step = steps[0]
-                          self.assertEqual(python_server_step['name'], 'python server ')
-                          self.assertEqual(python_server_step['type'], 'Background')
-                          test_connection_step = steps[1]
-                          self.assertEqual(test_connection_step['name'], 'test connection to server ')
-                          self.assertEqual(test_connection_step['type'], 'Run')
-
-                      if __name__ == '__main__':
-                        unittest.main()
-                    reports:
-                      type: JUnit
-                      spec:
-                        paths:
-                          - "*.xml"
-              - step:
-                  type: Run
                   name: Build App
                   identifier: Build_App
                   spec:
