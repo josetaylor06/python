@@ -29,16 +29,7 @@ pipeline:
                     image: python:3.10.6-alpine
                     shell: Sh
                     command: |
-                      <!DOCTYPE html>
-                      <html lang="en">
-                          <head>
-                              <meta charset="UTF-8">
-                              <title>hey welcome to harness</title>
-                          </head>
-                          <body>
-                              <h1>Hello World!</h1>
-                          </body>
-                      </html>
+                      echo "Welcom to Harness, Hello World"
                     reports:
                       type: JUnit
                       spec:
